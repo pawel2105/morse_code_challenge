@@ -11,12 +11,12 @@ class EncoderEncodeMessageTest < Test::Unit::TestCase
   def test_encode_message
     encoder = Encoder.new('Good morning')
     result = encoder.encode_message
-    assert_equal result, "--.|---|---|-..|/--|---|.-.|-.|..|-.|--.|/"
+    assert_equal result, "--.|---|---|-../--|---|.-.|-.|..|-.|--."
   end
 
   def test_encode_message_with_invalid_characters
     encoder = Encoder.new('Good morning!*!')
     result = encoder.encode_message
-    assert_equal result, "--.|---|---|-..|/--|---|.-.|-.|..|-.|--.|*|*|*|/"
+    assert_equal result, "--.|---|---|-../--|---|.-.|-.|..|-.|--.|*|*|*"
   end
 end

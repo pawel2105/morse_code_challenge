@@ -21,10 +21,16 @@ class Encoder
       encode_line(line, encoded_tokens)
     end
 
-    encoded_tokens.join('')
+    display_result(encoded_tokens)
   end
 
   private
+
+  def display_result(encoded_tokens)
+    result = encoded_tokens.join('')
+    result = result.gsub(/\|\//,'/')
+    result.sub(/\/\z/,'')
+  end
 
   def encode_line(line, result)
     words = line.split(' ')
