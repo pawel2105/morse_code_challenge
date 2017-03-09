@@ -4,6 +4,7 @@ gem 'test-unit'
 require 'test/unit'
 require 'test/unit/ui/console/testrunner'
 require_relative 'encoder'
+require_relative 'obfuscator'
 require_relative 'parser'
 
 # Encoder tests
@@ -19,6 +20,58 @@ class EncoderEncodeMessageTest < Test::Unit::TestCase
     encoder = Encoder.new('Good morning!*!')
     result = encoder.encode_message
     assert_equal result, "--.|---|---|-../--|---|.-.|-.|..|-.|--.|*|*|*"
+  end
+end
+
+# Obfuscator tests
+
+class ObfuscatorObfuscateTest < Test::Unit::TestCase
+  def test_obfuscate_with_valid_characters
+    message = "....|.|.-..|.-..|---"
+    obfuscator = Obfuscator.new(message)
+    result = obfuscator.obfuscate
+    assert_equal result, "4|1|1A2|1A2|C"
+  end
+
+  def test_obfuscate_with_invalid_characters
+    message = "....|.|.-..|.-..|---|*|*|*"
+    obfuscator = Obfuscator.new(message)
+    result = obfuscator.obfuscate
+    assert_equal result, "4|1|1A2|1A2|C|*|*|*"
+  end
+end
+
+class ObfuscatorObfuscateWithTest < Test::Unit::TestCase
+  def test_obfuscate_with_using_valid_characters_for_dots
+    message = "....|.|.-..|.-..|---"
+    obfuscator = Obfuscator.new(message)
+    type = '.'
+    result = obfuscator.obfuscate_with(type, message)
+    assert_equal result, "4|1|1-2|1-2|---"
+  end
+
+  def test_obfuscate_with_using_valid_characters_for_dashes
+    message = "....|.|.-..|.-..|---"
+    obfuscator = Obfuscator.new(message)
+    type = '-'
+    result = obfuscator.obfuscate_with(type, message)
+    assert_equal result, "....|.|.A..|.A..|C"
+  end
+
+  def test_obfuscate_with_using_invalid_characters_for_dots
+    message = "....|.|.-..|.-..|---|*|*|*"
+    obfuscator = Obfuscator.new(message)
+    type = '.'
+    result = obfuscator.obfuscate_with(type, message)
+    assert_equal result, "4|1|1-2|1-2|---|*|*|*"
+  end
+
+  def test_obfuscate_with_using_invalid_characters_for_dashes
+    message = "....|.|.-..|.-..|---|*|*|*"
+    obfuscator = Obfuscator.new(message)
+    type = '-'
+    result = obfuscator.obfuscate_with(type, message)
+    assert_equal result, "....|.|.A..|.A..|C|*|*|*"
   end
 end
 
